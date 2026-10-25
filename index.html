@@ -62,7 +62,7 @@ footer{text-align:center;color:var(--muted);font-size:11px;padding:20px 0}.notic
  <div class="notice">A pontuação não comprova demanda nem concorrência. Produtos sem dados suficientes recebem indicação de informação incompleta.</div>
 </section>
 <section id="creator" class="panel">
- <div class="card"><h2>Criador de conteúdo</h2><p class="hint">Modelos locais gratuitos — não é uma IA online. Personalize o resultado antes de publicar.</p>
+ <div class="card"><h2>Criador de conteúdo</h2><p class="hint">Cria roteiro curto, legenda e hashtags sem créditos nem conexão externa. Personalize o resultado antes de publicar.</p>
  <label for="contentProduct">Escolha um produto</label><select id="contentProduct"><option value="">Selecione um produto...</option></select>
  <label for="style">Estilo do conteúdo</label><select id="style"><option value="curioso">Curiosidade / gancho forte</option><option value="problema">Problema e solução</option><option value="demonstracao">Demonstração do produto</option><option value="lista">Dica rápida / lista</option></select>
  <label for="audience">Público ou benefício real</label><input id="audience" placeholder="Ex.: quem quer organizar a cozinha">
@@ -75,7 +75,7 @@ footer{text-align:center;color:var(--muted);font-size:11px;padding:20px 0}.notic
  <div class="actions"><button class="btn secondary" id="exportBtn">Exportar backup</button><label class="btn ghost" style="margin:0;cursor:pointer">Importar backup<input id="importFile" type="file" accept="application/json" style="display:none"></label><button class="btn ghost" id="clearClicks">Zerar contagem de cliques</button></div>
  <p class="hint">A contagem não acompanha compras nem comissões. Os relatórios oficiais da Shopee continuam sendo a referência para esses dados.</p></div>
 </section>
-<footer>JUVELE • Ferramenta independente em versão inicial<br>*Criador com modelos locais, sem conexão com IA externa.</footer>
+<footer>JUVELE • Ferramenta independente em versão inicial<br>*Criador de conteúdo por modelos locais gratuitos; não conectado a IA externa ou à API da Shopee.</footer>
 </main>
 <div class="bottom"><span>Feito para organizar sua rotina de afiliada • dados salvos neste dispositivo</span></div>
 <script>
@@ -118,19 +118,22 @@ window.chooseProduct=id=>{$('contentProduct').value=id;go('creator')};
 $('sortRadar').onchange=render;
 $('generate').onclick=()=>{
  let p=db.products.find(x=>x.id===$('contentProduct').value);if(!p){alert('Cadastre e selecione um produto primeiro.');return}
- const audience=$('audience').value.trim()||p.category.toLowerCase();let hook,body;
+ const audience=$('audience').value.trim()||p.category.toLowerCase();
+ const detail=p.notes.trim();
+ let hook,scene,benefit,cta;
  switch($('style').value){
- case 'problema':hook=`Você também procura uma forma prática de ${audience}?`;body=`Mostre o produto ${p.name} e explique, com suas próprias imagens, como ele pode ajudar nesse caso.`;
- break;
- case 'demonstracao':hook=`Olha esse detalhe de ${p.name} 👀`;body=`Mostre o produto de perto, demonstre como funciona e destaque apenas características confirmadas na descrição.`;
- break;
- case 'lista':hook=`3 coisas para observar antes de escolher ${p.name}`;body=`1. Confira as medidas e características. 2. Compare avaliações reais. 3. Veja se atende ao que você precisa.`;
- break;
- default:hook=`Esse produto pode chamar sua atenção: ${p.name} ✨`;body=`Veja os detalhes de ${p.name} e confira se combina com o que você procura.`;
+ case 'problema':hook=`Você também passa por isso quando o assunto é ${audience}?`;scene=`Comece mostrando a situação ou necessidade que o produto pode ajudar a resolver.`;benefit=`Apresente ${p.name} e explique como ele pode ser útil. ${detail?`Use este detalhe informado por você: ${detail}`:'Mostre apenas benefícios e características que você confirmou na página do produto.'}`;break;
+ case 'demonstracao':hook=`Olha esse detalhe de ${p.name}! 👀`;scene=`Mostre o produto de perto; depois, grave uma demonstração real de como ele é usado.`;benefit=detail?`Destaque: ${detail}`:`Mostre tamanho, material, acabamento ou modo de uso somente se você conseguir confirmar esses detalhes.`;break;
+ case 'lista':hook=`Antes de comprar ${p.name}, confira estas 3 coisas!`;scene=`1. Confira as medidas e características. 2. Leia avaliações recentes. 3. Compare o preço final e o frete.`;benefit=`Apresente ${p.name} como uma opção para pesquisar, sem afirmar que é o melhor para todo mundo.`;break;
+ default:hook=`Pare um pouquinho para ver esse produto: ${p.name} ✨`;scene=`Abra o vídeo com um close do produto ou mostre primeiro o detalhe mais interessante que você confirmou.`;benefit=detail?`O que vale destacar: ${detail}`:`Mostre os detalhes reais do produto e diga por que ele chamou sua atenção.`;
  }
- const caption=`${hook}\n\n${body}\n\nQuer conferir? Acesse o link do produto na minha vitrine. 💗\n\n#Shopee #Achados #Ofertas #DicasDeCompra #JUVELE`;
- $('contentOutput').innerHTML=`<div class="copybox" id="generatedText">${esc(hook+'\n\n'+body+'\n\nChamada para ação: Confira os detalhes pelo meu link de afiliada.\n\nLegenda e hashtags:\n'+caption)}</div><div class="actions"><button class="btn" id="copyContent">Copiar texto</button></div><p class="hint">Revise e personalize o texto. Não prometa resultados, descontos ou características que você não verificou.</p>`;
- $('copyContent').onclick=async()=>{try{await navigator.clipboard.writeText(hook+'\n\n'+body+'\n\nChamada para ação: Confira os detalhes pelo meu link de afiliada.\n\n'+caption);$('copyContent').textContent='Copiado!'}catch(e){alert('Selecione o texto e copie manualmente.')}};
+ cta='Se quiser conferir preço, avaliações e detalhes, toque no meu link de afiliada. 💗';
+ const script=`ROTEIRO CURTO (15–20 segundos)\n\n0–3s | GANCHO\n${hook}\n\n3–12s | MOSTRE O PRODUTO\n${scene}\n${benefit}\n\n12–20s | CHAMADA\n${cta}`;
+ const caption=`${hook}\n\n${benefit}\n\nConfira os detalhes pelo link da minha vitrine. 💗\n\n#JUVELE #Shopee #Achadinhos #DicasDeCompra #Ofertas`;
+ const all=`${script}\n\nLEGENDA PARA O POST\n${caption}`;
+ $('contentOutput').innerHTML=`<div class="copybox" id="generatedText">${esc(all)}</div><div class="actions"><button class="btn" id="copyContent">Copiar roteiro e legenda</button><button class="btn secondary" id="copyCaption">Copiar só a legenda</button></div><p class="hint">Este criador usa modelos gratuitos dentro do aplicativo; não é uma IA online. Revise o texto e confirme as características, preço e disponibilidade antes de publicar.</p>`;
+ $('copyContent').onclick=async()=>{try{await navigator.clipboard.writeText(all);$('copyContent').textContent='Copiado!'}catch(e){alert('Seu navegador não permitiu copiar automaticamente. Pressione o texto por alguns segundos e copie manualmente.')}};
+ $('copyCaption').onclick=async()=>{try{await navigator.clipboard.writeText(caption);$('copyCaption').textContent='Legenda copiada!'}catch(e){alert('Seu navegador não permitiu copiar automaticamente. Copie a legenda manualmente.')}};
  db.contents++;localStorage.setItem(KEY,JSON.stringify(db));render();
 };
 $('exportBtn').onclick=()=>{const blob=new Blob([JSON.stringify(db,null,2)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='juvele-backup.json';a.click();URL.revokeObjectURL(a.href)};
