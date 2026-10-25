@@ -1,0 +1,26 @@
+# JUVELE — primeira versão PWA
+
+## O que esta versão faz
+- Cadastro local de produtos e links de afiliada.
+- Radar de pontuação orientativa com base somente nos dados inseridos.
+- Modelos locais de gancho, roteiro, legenda e hashtags.
+- Registro local de cliques quando o link é aberto pelo botão do aplicativo.
+- Exportação/importação de backup JSON.
+- PWA com manifesto e service worker para instalação/offline após hospedagem HTTPS.
+
+## Limites importantes
+- Não se conecta à Shopee, não busca produtos automaticamente e não lê vendas/comissões oficiais.
+- O criador usa modelos locais; não é uma IA generativa online.
+- Dados ficam neste navegador/dispositivo. Exporte backups regularmente.
+- Cliques registrados são somente cliques locais, não analytics oficiais.
+- Publicar na Play Store e integração com APIs são etapas separadas e podem ter requisitos/custos.
+
+## Como publicar grátis para instalar como app
+1. Crie uma conta GitHub gratuita se ainda não tiver.
+2. Crie um repositório público chamado `juvele`.
+3. Envie todos os arquivos desta pasta para a raiz do repositório.
+4. Em Settings > Pages, escolha Deploy from a branch, branch `main`, folder `/ (root)`, e salve.
+5. Aguarde a URL HTTPS do GitHub Pages. Abra-a no Chrome do Android.
+6. No menu do Chrome, escolha “Instalar app” ou “Adicionar à tela inicial”.
+
+O nome exato das opções pode variar. PWA precisa ser servido em HTTPS (ou localhost para testes); abrir o HTML diretamente como arquivo não instala o PWA.

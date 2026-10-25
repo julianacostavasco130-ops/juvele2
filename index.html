@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#d63384">
+<meta name="description" content="JUVELE — painel gratuito para organizar produtos de afiliada e criar conteúdos de venda.">
+<link rel="manifest" href="./manifest.webmanifest">
+<link rel="icon" href="./icon.svg" type="image/svg+xml">
+<title>JUVELE • Robô de Vendas</title>
+<style>
+:root{--pink:#d63384;--pink2:#fce7f3;--ink:#352331;--muted:#806b79;--bg:#fff8fc;--card:#fff;--line:#f0d9e6;--green:#16835d;--shadow:0 8px 24px #7b235014}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.45 system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
+header{padding:calc(16px + env(safe-area-inset-top)) 18px 18px;background:linear-gradient(135deg,#c21870,#ed6aa8);color:white;border-radius:0 0 25px 25px;box-shadow:var(--shadow)}
+.brand{display:flex;align-items:center;gap:10px}.logo{width:43px;height:43px;border-radius:14px;background:#ffffff26;display:grid;place-items:center;font-weight:900;font-size:22px;border:1px solid #ffffff55}
+h1{font-size:22px;margin:0;letter-spacing:.3px}header p{margin:4px 0 0;color:#ffe6f2;font-size:13px}
+main{max-width:850px;margin:auto;padding:16px 14px 92px}.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin:0 0 16px}.stat,.card{background:var(--card);border:1px solid var(--line);border-radius:17px;padding:13px;box-shadow:var(--shadow)}.stat small{display:block;color:var(--muted);font-size:11px}.stat strong{font-size:21px;color:var(--pink)}
+nav{display:flex;gap:7px;overflow:auto;padding:2px 0 13px;scrollbar-width:none}nav button{white-space:nowrap;border:1px solid var(--line);border-radius:999px;background:white;color:var(--muted);padding:10px 13px;font-weight:700}nav button.active{background:var(--pink);border-color:var(--pink);color:white}
+h2{font-size:19px;margin:7px 0 5px}h3{font-size:15px;margin:0 0 7px}.hint{font-size:12px;color:var(--muted);margin:0 0 13px}
+label{display:block;font-size:12px;font-weight:700;color:var(--muted);margin:10px 0 5px}input,select,textarea{width:100%;border:1px solid var(--line);border-radius:11px;padding:11px 12px;background:#fff;color:var(--ink);font:inherit;outline-color:var(--pink)}textarea{min-height:90px;resize:vertical}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}.btn{border:0;border-radius:12px;background:var(--pink);color:white;padding:11px 14px;font:700 14px system-ui;cursor:pointer}.btn.secondary{background:var(--pink2);color:#9f175c}.btn.ghost{background:white;color:var(--pink);border:1px solid var(--line)}.actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:13px}.full{width:100%}
+.panel{display:none}.panel.active{display:block}.product{border:1px solid var(--line);background:white;border-radius:15px;padding:13px;margin-top:10px}.producttop{display:flex;justify-content:space-between;gap:10px}.productname{font-weight:800;overflow-wrap:anywhere}.price{font-weight:800;color:var(--pink)}.pill{display:inline-block;background:var(--pink2);color:#9f175c;border-radius:999px;padding:4px 8px;font-size:11px;font-weight:800;margin:4px 3px 0 0}.empty{padding:22px;text-align:center;border:1px dashed #e5b9d0;border-radius:15px;color:var(--muted);background:#fff}
+footer{text-align:center;color:var(--muted);font-size:11px;padding:20px 0}.notice{background:#fff2d7;border:1px solid #f4d89a;color:#79591b;border-radius:12px;padding:11px;font-size:12px;margin:12px 0}.copybox{white-space:pre-wrap;background:#fff;border:1px solid var(--line);padding:13px;border-radius:13px;margin-top:10px;overflow-wrap:anywhere}
+.bottom{position:fixed;bottom:0;left:0;right:0;background:#fffdfef2;border-top:1px solid var(--line);padding:10px 14px calc(10px + env(safe-area-inset-bottom));display:flex;justify-content:center;backdrop-filter:blur(10px)}.bottom span{font-size:12px;color:var(--muted)}
+@media(min-width:650px){main{padding:22px 22px 90px}.stats{gap:14px}.stat{padding:17px}.grid2{grid-template-columns:1fr 1fr}}
+</style>
+</head>
+<body>
+<header><div class="brand"><div class="logo">J</div><div><h1>JUVELE</h1><p>Seu painel inteligente de vendas ✨</p></div></div></header>
+<main>
+<div class="stats">
+ <div class="stat"><small>Produtos salvos</small><strong id="statProducts">0</strong></div>
+ <div class="stat"><small>Cliques registrados</small><strong id="statClicks">0</strong></div>
+ <div class="stat"><small>Conteúdos criados</small><strong id="statContent">0</strong></div>
+</div>
+<nav id="nav">
+<button class="active" data-tab="home">Início</button><button data-tab="products">Produtos</button><button data-tab="radar">Radar</button><button data-tab="creator">Criador IA*</button><button data-tab="results">Resultados</button>
+</nav>
+<section id="home" class="panel active">
+ <div class="card"><h2>Bem-vinda à JUVELE 💗</h2><p class="hint">Organize os produtos, descubra quais merecem atenção e prepare conteúdo para divulgar como afiliada.</p>
+ <div class="actions"><button class="btn" data-go="products">＋ Cadastrar produto</button><button class="btn secondary" data-go="creator">Criar conteúdo</button></div></div>
+ <div class="notice"><b>Versão gratuita inicial:</b> os dados ficam guardados neste navegador/celular. Exporte um backup regularmente. A busca automática na Shopee e a IA online ainda não estão conectadas.</div>
+ <div class="card"><h3>Como começar</h3><p>1. Cadastre um produto com seu link de afiliada.<br>2. Preencha apenas os dados que você realmente conhece.<br>3. Use o Radar para priorizar produtos.<br>4. Gere uma legenda e copie para seu vídeo.</p></div>
+</section>
+<section id="products" class="panel">
+ <div class="card"><h2>Cadastro de produto</h2><p class="hint">Campos com dados desconhecidos podem ficar vazios.</p>
+ <form id="productForm">
+ <label for="pname">Nome do produto *</label><input id="pname" required maxlength="160" placeholder="Ex.: Bolsa feminina transversal">
+ <div class="grid2"><div><label for="price">Preço (R$)</label><input id="price" type="number" min="0" step=".01" placeholder="59,90"></div><div><label for="rating">Nota (0 a 5)</label><input id="rating" type="number" min="0" max="5" step=".1" placeholder="4,8"></div></div>
+ <div class="grid2"><div><label for="reviews">Nº de avaliações</label><input id="reviews" type="number" min="0" step="1" placeholder="120"></div><div><label for="sales">Vendas informadas</label><input id="sales" type="number" min="0" step="1" placeholder="Ex.: 500"></div></div>
+ <div class="grid2"><div><label for="affiliates">Afiliados (se souber)</label><input id="affiliates" type="number" min="0" step="1" placeholder="Não obrigatório"></div><div><label for="category">Categoria</label><select id="category"><option>Beleza</option><option>Moda</option><option>Casa e cozinha</option><option>Bebê</option><option>Eletrônicos</option><option>Acessórios</option><option>Outros</option></select></div></div>
+ <label for="link">Seu link de afiliada</label><input id="link" type="url" placeholder="https://...">
+ <label for="notes">Observações</label><textarea id="notes" placeholder="Benefícios reais, público-alvo, etc."></textarea>
+ <div class="actions"><button class="btn" type="submit">Salvar produto</button><button class="btn ghost" type="reset">Limpar</button></div>
+ </form></div>
+ <h2 style="margin-top:18px">Meus produtos</h2><div id="productList"></div>
+</section>
+<section id="radar" class="panel">
+ <div class="card"><h2>Radar de oportunidades</h2><p class="hint">Pontuação orientativa baseada somente nos dados que você cadastrou. Não é previsão de vendas.</p>
+ <label for="sortRadar">Ordenar por</label><select id="sortRadar"><option value="score">Maior pontuação estimada</option><option value="reviews">Mais avaliações</option><option value="price">Menor preço</option></select></div>
+ <div id="radarList"></div>
+ <div class="notice">A pontuação não comprova demanda nem concorrência. Produtos sem dados suficientes recebem indicação de informação incompleta.</div>
+</section>
+<section id="creator" class="panel">
+ <div class="card"><h2>Criador de conteúdo</h2><p class="hint">Modelos locais gratuitos — não é uma IA online. Personalize o resultado antes de publicar.</p>
+ <label for="contentProduct">Escolha um produto</label><select id="contentProduct"><option value="">Selecione um produto...</option></select>
+ <label for="style">Estilo do conteúdo</label><select id="style"><option value="curioso">Curiosidade / gancho forte</option><option value="problema">Problema e solução</option><option value="demonstracao">Demonstração do produto</option><option value="lista">Dica rápida / lista</option></select>
+ <label for="audience">Público ou benefício real</label><input id="audience" placeholder="Ex.: quem quer organizar a cozinha">
+ <div class="actions"><button class="btn" id="generate">Gerar conteúdo</button></div>
+ <div id="contentOutput"></div></div>
+</section>
+<section id="results" class="panel">
+ <div class="card"><h2>Meus resultados</h2><p class="hint">Cliques registrados quando alguém abre um link dentro deste app. Isso não é o total de cliques ou vendas da Shopee.</p>
+ <div id="clickList"></div>
+ <div class="actions"><button class="btn secondary" id="exportBtn">Exportar backup</button><label class="btn ghost" style="margin:0;cursor:pointer">Importar backup<input id="importFile" type="file" accept="application/json" style="display:none"></label><button class="btn ghost" id="clearClicks">Zerar contagem de cliques</button></div>
+ <p class="hint">A contagem não acompanha compras nem comissões. Os relatórios oficiais da Shopee continuam sendo a referência para esses dados.</p></div>
+</section>
+<footer>JUVELE • Ferramenta independente em versão inicial<br>*Criador com modelos locais, sem conexão com IA externa.</footer>
+</main>
+<div class="bottom"><span>Feito para organizar sua rotina de afiliada • dados salvos neste dispositivo</span></div>
+<script>
+const KEY='juvele-v1-data';
+let db={products:[],clicks:{},contents:0};
+try{const saved=localStorage.getItem(KEY);if(saved)db={...db,...JSON.parse(saved)}}catch(e){}
+const $=id=>document.getElementById(id);
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const money=v=>v===''||v==null?'—':Number(v).toLocaleString('pt-BR',{style:'currency',currency:'BRL'});
+function save(){localStorage.setItem(KEY,JSON.stringify(db));render()}
+function go(tab){document.querySelectorAll('.panel').forEach(x=>x.classList.toggle('active',x.id===tab));document.querySelectorAll('nav button').forEach(x=>x.classList.toggle('active',x.dataset.tab===tab));window.scrollTo({top:0,behavior:'smooth'})}
+document.querySelectorAll('nav button').forEach(b=>b.onclick=()=>go(b.dataset.tab));
+document.querySelectorAll('[data-go]').forEach(b=>b.onclick=()=>go(b.dataset.go));
+function score(p){
+ let s=0,known=0;
+ if(p.rating!==''&&p.rating!=null){s+=Math.min(30,Number(p.rating)/5*30);known++}
+ if(p.reviews!==''&&p.reviews!=null){s+=Math.min(25,Math.log10(Number(p.reviews)+1)/3*25);known++}
+ if(p.sales!==''&&p.sales!=null){s+=Math.min(30,Math.log10(Number(p.sales)+1)/4*30);known++}
+ if(p.affiliates!==''&&p.affiliates!=null){s+=Math.max(0,15-(Math.log10(Number(p.affiliates)+1)*5));known++}
+ return {score:Math.round(s),known};
+}
+function render(){
+ $('statProducts').textContent=db.products.length;
+ $('statClicks').textContent=Object.values(db.clicks).reduce((a,b)=>a+b,0);
+ $('statContent').textContent=db.contents;
+ const list=$('productList'),radar=$('radarList'),sel=$('contentProduct');
+ if(!db.products.length){list.innerHTML='<div class="empty">Ainda não há produtos. Cadastre o primeiro acima. 💗</div>';radar.innerHTML='<div class="empty">Cadastre produtos para ver o Radar.</div>'}
+ else {
+  list.innerHTML=db.products.map(p=>`<div class="product"><div class="producttop"><div><div class="productname">${esc(p.name)}</div><div class="hint">${esc(p.category)} · ${money(p.price)}</div></div><span class="pill">${db.clicks[p.id]||0} cliques</span></div><div>${p.rating!==''?`<span class="pill">Nota ${esc(p.rating)}/5</span>`:''}${p.reviews!==''?`<span class="pill">${esc(p.reviews)} avaliações</span>`:''}${p.sales!==''?`<span class="pill">${esc(p.sales)} vendas informadas</span>`:''}${p.affiliates!==''?`<span class="pill">${esc(p.affiliates)} afiliados informados</span>`:''}</div><div class="actions">${p.link?`<button class="btn" onclick="openProduct('${p.id}')">Abrir link + contar clique</button>`:''}<button class="btn secondary" onclick="chooseProduct('${p.id}')">Criar conteúdo</button><button class="btn ghost" onclick="deleteProduct('${p.id}')">Excluir</button></div></div>`).join('');
+  let ps=[...db.products].sort((a,b)=>{let k=$('sortRadar').value;if(k==='reviews')return Number(b.reviews||0)-Number(a.reviews||0);if(k==='price')return Number(a.price||Infinity)-Number(b.price||Infinity);return score(b).score-score(a).score});
+  radar.innerHTML=ps.map(p=>{let z=score(p);return `<div class="product"><div class="producttop"><div class="productname">${esc(p.name)}</div><div class="price">${z.score}/100</div></div><p class="hint">${z.known<3?'Dados incompletos — pontuação parcial':'Pontuação baseada nos dados informados'} · ${esc(p.category)}</p><div>${p.rating!==''?`<span class="pill">Nota ${esc(p.rating)}</span>`:''}${p.reviews!==''?`<span class="pill">${esc(p.reviews)} avaliações</span>`:''}${p.sales!==''?`<span class="pill">${esc(p.sales)} vendas</span>`:''}${p.affiliates!==''?`<span class="pill">${esc(p.affiliates)} afiliados</span>`:''}</div><div class="actions"><button class="btn secondary" onclick="chooseProduct('${p.id}')">Preparar conteúdo</button></div></div>`}).join('');
+ }
+ const previous=sel.value;sel.innerHTML='<option value="">Selecione um produto...</option>'+db.products.map(p=>`<option value="${p.id}">${esc(p.name)}</option>`).join('');if(db.products.some(p=>p.id===previous))sel.value=previous;
+ $('clickList').innerHTML=db.products.length?db.products.map(p=>`<div class="product"><div class="producttop"><span class="productname">${esc(p.name)}</span><b>${db.clicks[p.id]||0}</b></div><small class="hint">cliques registrados neste dispositivo</small></div>`).join(''):'<div class="empty">Cadastre produtos para acompanhar cliques internos.</div>';
+}
+$('productForm').onsubmit=e=>{e.preventDefault();let p={id:crypto.randomUUID?crypto.randomUUID():String(Date.now()),name:$('pname').value.trim(),price:$('price').value,rating:$('rating').value,reviews:$('reviews').value,sales:$('sales').value,affiliates:$('affiliates').value,category:$('category').value,link:$('link').value.trim(),notes:$('notes').value.trim()};db.products.unshift(p);$('productForm').reset();save();go('products')};
+window.deleteProduct=id=>{if(confirm('Excluir este produto?')){db.products=db.products.filter(p=>p.id!==id);delete db.clicks[id];save()}};
+window.openProduct=id=>{let p=db.products.find(x=>x.id===id);if(!p||!p.link){alert('Este produto ainda não tem link.');return}db.clicks[id]=(db.clicks[id]||0)+1;save();window.open(p.link,'_blank','noopener,noreferrer')};
+window.chooseProduct=id=>{$('contentProduct').value=id;go('creator')};
+$('sortRadar').onchange=render;
+$('generate').onclick=()=>{
+ let p=db.products.find(x=>x.id===$('contentProduct').value);if(!p){alert('Cadastre e selecione um produto primeiro.');return}
+ const audience=$('audience').value.trim()||p.category.toLowerCase();let hook,body;
+ switch($('style').value){
+ case 'problema':hook=`Você também procura uma forma prática de ${audience}?`;body=`Mostre o produto ${p.name} e explique, com suas próprias imagens, como ele pode ajudar nesse caso.`;
+ break;
+ case 'demonstracao':hook=`Olha esse detalhe de ${p.name} 👀`;body=`Mostre o produto de perto, demonstre como funciona e destaque apenas características confirmadas na descrição.`;
+ break;
+ case 'lista':hook=`3 coisas para observar antes de escolher ${p.name}`;body=`1. Confira as medidas e características. 2. Compare avaliações reais. 3. Veja se atende ao que você precisa.`;
+ break;
+ default:hook=`Esse produto pode chamar sua atenção: ${p.name} ✨`;body=`Veja os detalhes de ${p.name} e confira se combina com o que você procura.`;
+ }
+ const caption=`${hook}\n\n${body}\n\nQuer conferir? Acesse o link do produto na minha vitrine. 💗\n\n#Shopee #Achados #Ofertas #DicasDeCompra #JUVELE`;
+ $('contentOutput').innerHTML=`<div class="copybox" id="generatedText">${esc(hook+'\n\n'+body+'\n\nChamada para ação: Confira os detalhes pelo meu link de afiliada.\n\nLegenda e hashtags:\n'+caption)}</div><div class="actions"><button class="btn" id="copyContent">Copiar texto</button></div><p class="hint">Revise e personalize o texto. Não prometa resultados, descontos ou características que você não verificou.</p>`;
+ $('copyContent').onclick=async()=>{try{await navigator.clipboard.writeText(hook+'\n\n'+body+'\n\nChamada para ação: Confira os detalhes pelo meu link de afiliada.\n\n'+caption);$('copyContent').textContent='Copiado!'}catch(e){alert('Selecione o texto e copie manualmente.')}};
+ db.contents++;localStorage.setItem(KEY,JSON.stringify(db));render();
+};
+$('exportBtn').onclick=()=>{const blob=new Blob([JSON.stringify(db,null,2)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='juvele-backup.json';a.click();URL.revokeObjectURL(a.href)};
+$('importFile').onchange=async e=>{const f=e.target.files[0];if(!f)return;try{const incoming=JSON.parse(await f.text());if(!Array.isArray(incoming.products)||typeof incoming.clicks!=='object')throw Error();if(confirm('Importar backup e substituir os dados atuais?')){db=incoming;save();alert('Backup importado.')}}catch(err){alert('Arquivo inválido. Escolha um backup JUVELE.')}e.target.value=''};
+$('clearClicks').onclick=()=>{if(confirm('Zerar apenas os cliques locais?')){db.clicks={};save()}};
+if('serviceWorker' in navigator && location.protocol.startsWith('http'))navigator.serviceWorker.register('./sw.js').catch(()=>{});
+render();
+</script>
+</body></html>
