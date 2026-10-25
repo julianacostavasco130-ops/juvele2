@@ -1,1 +1,1 @@
-.nojekyll # juvele2
+# juvele2
